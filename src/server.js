@@ -7,6 +7,12 @@ const { cards } = require('./../mock/cards.json')
 
 app.use(cors())
 
+
+/**
+ * limit: default 20 item/
+ * name: search monster by name
+ * type: search monster by type
+ */
 app.get('/api/cards', (req, res) => {
   const { name, type, limit = 20 } = req.query
 
