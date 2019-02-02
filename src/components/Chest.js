@@ -38,10 +38,29 @@ class Chest extends Component {
   }
   
   render() {
+
+    if (this.props.cards.length > 0)
+      return (
+        <StyledChest>
+          {this.listCard()}
+        </StyledChest>
+      )
+  
     return (
-      <StyledChest>
-        {this.listCard()}
-      </StyledChest>
+      <StyledChest >
+        <div style={{
+          textAlign: 'center',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <h1>
+            No card in Dex
+          </h1>
+        </div>
+      </StyledChest >
     )
   }
 }

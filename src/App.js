@@ -77,7 +77,7 @@ const AddButton = styled('button')`
 
 class App extends Component {
   state = {
-    showDex: true,
+    showDex: false,
   }
 
   togglePokedex = (bool) => {

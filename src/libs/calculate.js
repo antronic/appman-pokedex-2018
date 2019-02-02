@@ -100,13 +100,19 @@ export const calculate = (hpIn, atkArr, weakArr) => {
   const weak = calculateWeakness(weakArr)
   const atk = calculateAtack(atkArr)
   const damage = calculateDamage(atkArr)
-  const happiness = calculateHappiness(hp, damage, weak)
+  let happiness = calculateHappiness(hp, damage, weak)
 
+  if (isNaN(happiness)) {
+    happiness = 0
+  } else {
+    happiness = Math.abs(parseInt(happiness, 10))
+  }
   return {
     hp,
     weak,
     atk,
     damage,
-    happiness: Math.abs(parseInt(happiness, 10)),
+    happiness: new Array(happiness).fill(''),
+    happy: happiness
   }
 }

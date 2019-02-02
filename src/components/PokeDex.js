@@ -5,6 +5,8 @@ import {
   calculate,
 } from '@libs/calculate'
 
+import cute from '@app/cute.png'
+
 
 const Background = styled('div')`
   width: 100%;
@@ -66,7 +68,7 @@ const RightCol = styled('div')`
 const StyledInfoDisplay = styled('div')`
   border: 2px solid #2A1E0B;
   background: #91E563;
-  height: 128px;
+  height: 256px;
   font-family: 'VT323';
   color: #2A1E0B;
   padding: 10px;
@@ -91,20 +93,36 @@ class InfoDisplay extends Component {
   }
 
   render() {
-    console.log(this.calculate())
-    return (
-      <StyledInfoDisplay>
-        <p>
-          Name: {this.props.name}
-        </p>
-        <p>
-          HP: {this.formatHP(this.props.hp)}
-        </p>
-        <p>
-          Damage: { this.calculate().damage }
-        </p>
+    const c = this.calculate()
+    if (this.props.name !== null)
+      return (
+        <StyledInfoDisplay>
+          <p>
+            Name: {this.props.name}
+          </p>
+          <p>
+            HP: {c.hp}
+          </p>
+          <p>
+            Damage: { c.damage }
+          </p>
+          <p>
+            Weak: { c.weak }
+          </p>
+          <p>
+            Attack: { c.atk }
+          </p>
+          <p>
+            Happiness: {c.happy }
+          </p>
+      
+        </StyledInfoDisplay>
+      )
     
-      </StyledInfoDisplay>
+    return (
+      <StyledInfoDisplay >
+        <p>No infomation</p>
+      </StyledInfoDisplay >
     )
   }
 }
@@ -112,6 +130,14 @@ class InfoDisplay extends Component {
 export const ListCard = class ListCard extends Component {
   calculate = () => {
     return calculate(this.props.hp, this.props.attacks, this.props.weaknesses)
+  }
+
+  listHappy = () => {
+    const c = this.calculate()
+
+    return c.happiness.map(() => {
+      return <img src={cute} width="48px" />
+    })
   }
 
   render() {
@@ -139,21 +165,25 @@ export const ListCard = class ListCard extends Component {
             WEAK:
           </p>
           <Power val={c.weak}/>
+          
+          <div>
+            {this.listHappy()}
+          </div>
 
           {
             (this.props.poke === true) ? (
               <div>
                 <button onClick={() => {
                   this.props.onSelectClick({ ...this.props })
-                }}>select</button>
+                }}>Show Info</button>
                 <button onClick={() => {
                   this.props.onAddClick({ ...this.props })
-                }}>add</button>
+                }}>Add to Dex</button>
               </div>
             ) : (
               <button onClick={ () => {
               this.props.onClickRemove(this.props.index)
-              }}>X</button>
+              }}>Remove from Dex</button>
             )
           }
           
@@ -165,7 +195,7 @@ export const ListCard = class ListCard extends Component {
 
 class PokeDex extends Component {
   state = {
-    name: 'test',
+    name: null,
     hp: 100,
     attacks: [],
     weaknesses: [],
