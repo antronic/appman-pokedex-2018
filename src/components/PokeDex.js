@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
-import { format } from 'upath';
+import Power from '@comps/Power'
+import {
+  calculate,
+} from '@libs/calculate'
 
 
 const Background = styled('div')`
@@ -42,20 +45,22 @@ const StyledCard = styled('div')`
   padding: 10px 5px;
   width: 100%;
   display: flex;
-  div:first-child {
-    width: 30%;
+`
+
+const LeftCol = styled('div')`
+  width: 30%;
     img {
       width: 100%;
-    }
   }
-  div:last-child {
-    width: 70%;
+`
+const RightCol = styled('div')`
+  width: 70%;
     padding: 10px;
     p {
       font-family: 'Gaegu';
       font-size: 2em;
+      margin: 0 !important;
     }
-  }
 `
 
 const StyledInfoDisplay = styled('div')`
@@ -81,7 +86,12 @@ class InfoDisplay extends Component {
     return val
   }
 
+  calculate = () => {
+    return calculate(this.props.hp, this.props.attacks, this.props.weaknesses)
+  }
+
   render() {
+    console.log(this.calculate())
     return (
       <StyledInfoDisplay>
         <p>
@@ -90,30 +100,64 @@ class InfoDisplay extends Component {
         <p>
           HP: {this.formatHP(this.props.hp)}
         </p>
+        <p>
+          Damage: { this.calculate().damage }
+        </p>
     
       </StyledInfoDisplay>
     )
   }
 }
 
-class ListCard extends Component {
+export const ListCard = class ListCard extends Component {
+  calculate = () => {
+    return calculate(this.props.hp, this.props.attacks, this.props.weaknesses)
+  }
+
   render() {
+    const c = this.calculate()
     return (
       <StyledCard>
-        <div>
+        <LeftCol>
           <img src={this.props.imageUrl} alt={this.props.name}/>
-        </div>
-        <div>
+        </LeftCol>
+        <RightCol>
           <p>
             {this.props.name}
           </p>
-          <button onClick={() => {
-            this.props.onSelectClick({...this.props})
-          }}>select</button>
-          <button onClick={() => {
-            this.props.onAddClick({...this.props})
-          }}>add</button>
-        </div>
+
+          <p>
+            HP:
+          </p>
+          <Power val={c.hp}/>
+          <p>
+            STR:
+          </p>
+          <Power val={c.atk}/>
+
+          <p>
+            WEAK:
+          </p>
+          <Power val={c.weak}/>
+
+          {
+            (this.props.poke === true) ? (
+              <div>
+                <button onClick={() => {
+                  this.props.onSelectClick({ ...this.props })
+                }}>select</button>
+                <button onClick={() => {
+                  this.props.onAddClick({ ...this.props })
+                }}>add</button>
+              </div>
+            ) : (
+              <button onClick={ () => {
+              this.props.onClickRemove(this.props.index)
+              }}>X</button>
+            )
+          }
+          
+        </RightCol>
       </StyledCard>
     )
   }
@@ -149,7 +193,7 @@ class PokeDex extends Component {
   listCard = () => {
     return this.props.cards.map((card, index) => {
       return (
-        <ListCard key={index} onSelectClick={this.selectPokemon} onAddClick={this.onAdd} {...card} />
+        <ListCard poke={true} key={index} onSelectClick={this.selectPokemon} onAddClick={this.onAdd} {...card} />
       )
     })
   }

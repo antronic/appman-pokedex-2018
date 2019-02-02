@@ -32,7 +32,7 @@ class Chest extends Component {
   listCard = () => {
     return this.props.cards.map((card, index) => {
       return (
-        <Card key={index} index={index} {...card} />
+        <Card key={index} poke={false} index={index} {...card} />
       )
     })
   }
