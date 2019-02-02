@@ -94,6 +94,13 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
+
+      '@app': path.resolve(__dirname, '..', 'src'),
+      '@comps': path.resolve(__dirname, '..', 'src/components'),
+      '@comptmps': path.resolve(__dirname, '..', 'src/comptemps'),
+      '@conts': path.resolve(__dirname, '..', 'src/containers'),
+      '@ducks': path.resolve(__dirname, '..', 'src/ducks'),
+      '@libs': path.resolve(__dirname, '..', 'src/libs'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -152,6 +159,14 @@ module.exports = {
               
               compact: true,
             },
+          },
+          {
+            test: /\.scss$/,
+            use: [
+              require.resolve('style-loader'),
+              require.resolve('css-loader'),
+              require.resolve('sass-loader'),
+            ],
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
