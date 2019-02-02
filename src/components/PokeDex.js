@@ -103,6 +103,7 @@ class PokeDex extends Component {
     attacks: [],
     weaknesses: [],
 
+    search: '',
     search_by: 'name',
   }
   componentWillMount() {
@@ -131,6 +132,9 @@ class PokeDex extends Component {
   }
 
   onSearch = (value) => {
+    this.setState({
+      search: value,
+    })
     this.props.onSearch(value, this.state.search_by)
   }
   
@@ -138,6 +142,8 @@ class PokeDex extends Component {
     this.setState({
       search_by: value,
     })
+
+    this.props.onSearch(this.state.search, this.state.search_by)
   }
 
   render() {
