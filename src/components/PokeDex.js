@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
+import { format } from 'upath';
 
 
 const Background = styled('div')`
@@ -67,10 +68,29 @@ const StyledInfoDisplay = styled('div')`
 `
 
 class InfoDisplay extends Component {
+
+  formatHP = (val) => {
+    if (val > 100) {
+      return 100
+    }
+
+    if (val < 0) {
+      return 0
+    }
+
+    return val
+  }
+
   render() {
     return (
       <StyledInfoDisplay>
-        Name: { this.props.name }
+        <p>
+          Name: {this.props.name}
+        </p>
+        <p>
+          HP: {this.formatHP(this.props.hp)}
+        </p>
+    
       </StyledInfoDisplay>
     )
   }
@@ -87,6 +107,9 @@ class ListCard extends Component {
           <p>
             {this.props.name}
           </p>
+          <button onClick={() => {
+            this.props.onSelectClick({...this.props})
+          }}>select</button>
           <button onClick={() => {
             this.props.onAddClick({...this.props})
           }}>add</button>
@@ -126,7 +149,7 @@ class PokeDex extends Component {
   listCard = () => {
     return this.props.cards.map((card, index) => {
       return (
-        <ListCard key={index} onAddClick={this.onAdd} {...card} />
+        <ListCard key={index} onSelectClick={this.selectPokemon} onAddClick={this.onAdd} {...card} />
       )
     })
   }
