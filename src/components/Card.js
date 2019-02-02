@@ -11,13 +11,26 @@ const StyledCard = styled('div')`
 `
 
 class Card extends Component {
+
+  formatHP = (val) => {
+    if (val > 100) {
+      return 100
+    }
+
+    if (val < 0) {
+      return 0
+    }
+
+    return val
+  }
   render() {
     return (
       <StyledCard>
           <button onClick={() => {
           this.props.onClickRemove(this.props.index)
           }}>X</button>
-          { this.props.name }
+        <p>{this.props.name}</p>
+        <p>HP: {this.formatHP(this.props.hp)}</p>
       </StyledCard>
     )
   }
