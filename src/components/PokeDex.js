@@ -143,7 +143,7 @@ class PokeDex extends Component {
       search_by: value,
     })
 
-    this.props.onSearch(this.state.search, this.state.search_by)
+    this.props.onSearch(this.state.search, value)
   }
 
   render() {
